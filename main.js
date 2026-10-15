@@ -38,6 +38,9 @@
   }
 
   const mark = document.querySelector("[data-parallax]");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)")
+    .matches;
+
   if (mark && !reduceMotion) {
     let ticking = false;
     let tiltX = 0;
@@ -52,7 +55,7 @@
     window.addEventListener(
       "scroll",
       () => {
-        scrollY = Math.min(window.scrollY, 520) * 0.08;
+        scrollY = Math.min(window.scrollY, 520) * (finePointer ? 0.08 : 0.04);
         if (!ticking) {
           ticking = true;
           requestAnimationFrame(paint);
@@ -62,7 +65,7 @@
     );
 
     const tiltTarget = document.querySelector("[data-tilt]");
-    if (tiltTarget) {
+    if (tiltTarget && finePointer) {
       tiltTarget.style.transformStyle = "preserve-3d";
       tiltTarget.addEventListener("pointermove", (e) => {
         const rect = tiltTarget.getBoundingClientRect();
